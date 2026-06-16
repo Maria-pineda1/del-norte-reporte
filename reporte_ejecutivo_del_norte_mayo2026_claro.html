@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte Ejecutivo · Del Norte by Windmar Home</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f4f8;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+  .wrap { max-width: 800px; margin: 0 auto; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    padding: 10px 28px;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .tab-btn:hover { border-color: #93c5fd; color: #0284c7; }
+  .tab-btn.active { background: #0284c7; border-color: #0284c7; color: #ffffff; box-shadow: 0 4px 12px rgba(2,132,199,0.25); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* HEADER */
+  .header {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 30px 32px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #0284c7, #38bdf8, #7dd3fc);
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .brand-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #0284c7; margin-bottom: 6px; }
+  .report-title { font-size: 22px; font-weight: 800; color: #0f172a; line-height: 1.2; }
+  .report-subtitle { font-size: 13px; color: #64748b; margin-top: 4px; }
+  .period-badge {
+    background: #eff6ff;
+    border: 1.5px solid #93c5fd;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .period-badge .label { font-size: 9px; color: #3b82f6; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+  .period-badge .value { font-size: 13px; font-weight: 700; color: #1d4ed8; margin-top: 3px; }
+
+  /* KPIs */
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .kpi-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+  .kpi-card.blue::after { background: #0284c7; }
+  .kpi-card.green::after { background: #16a34a; }
+  .kpi-card.amber::after { background: #d97706; }
+  .kpi-icon { font-size: 22px; margin-bottom: 10px; }
+  .kpi-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
+  .kpi-value { font-size: 36px; font-weight: 800; line-height: 1; }
+  .kpi-card.blue .kpi-value { color: #0284c7; }
+  .kpi-card.green .kpi-value { color: #16a34a; }
+  .kpi-card.amber .kpi-value { color: #d97706; }
+  .kpi-sub { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+
+  /* SECTION */
+  .section {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px 26px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .section-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: #94a3b8; margin-bottom: 18px; padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  /* FUNNEL */
+  .funnel-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .funnel-row:last-child { margin-bottom: 0; }
+  .funnel-label { font-size: 12px; color: #475569; width: 160px; flex-shrink: 0; font-weight: 500; }
+  .funnel-bar-bg { flex: 1; height: 10px; background: #f1f5f9; border-radius: 99px; overflow: hidden; }
+  .funnel-bar { height: 100%; border-radius: 99px; }
+  .funnel-num { font-size: 14px; font-weight: 800; color: #1e293b; width: 28px; text-align: right; }
+  .funnel-rate { font-size: 11px; color: #94a3b8; width: 44px; text-align: right; font-weight: 600; }
+
+  /* LEAD GRID */
+  .lead-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .lead-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+  .lead-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .dot-orange { background: #f97316; }
+  .dot-green { background: #16a34a; }
+  .dot-yellow { background: #ca8a04; }
+  .dot-red { background: #dc2626; }
+  .dot-blue { background: #2563eb; }
+  .dot-gray { background: #94a3b8; }
+  .lead-label { font-size: 12px; color: #475569; flex: 1; line-height: 1.3; }
+  .lead-right { text-align: right; }
+  .lead-count { font-size: 20px; font-weight: 800; color: #1e293b; line-height: 1; }
+  .lead-pct { font-size: 10px; color: #94a3b8; font-weight: 600; }
+
+  /* DECISION */
+  .decision-box {
+    background: #f0fdf4;
+    border: 1.5px solid #86efac;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(22,163,74,0.08);
+  }
+  .decision-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #16a34a, #4ade80); }
+  .decision-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #15803d; margin-bottom: 10px; }
+  .decision-content { font-size: 13px; color: #166534; line-height: 1.75; }
+  .decision-content strong { color: #15803d; font-weight: 700; }
+
+  /* NEXT STEPS */
+  .next-steps { list-style: none; }
+  .next-steps li {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 12px; color: #475569;
+    padding: 11px 0;
+    border-bottom: 1px solid #f1f5f9;
+    line-height: 1.6;
+  }
+  .next-steps li:last-child { border-bottom: none; padding-bottom: 0; }
+  .step-num {
+    background: #0284c7; color: #fff;
+    font-size: 9px; font-weight: 800;
+    width: 19px; height: 19px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .next-steps strong { color: #1e293b; font-weight: 700; }
+
+  /* FOOTER */
+  .footer { text-align: center; font-size: 10px; color: #cbd5e1; margin-top: 12px; letter-spacing: 0.5px; }
+
+  /* MEJORA DE JUNIO badge */
+  .mejora-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: #f0fdf4; border: 1px solid #86efac;
+    border-radius: 99px; padding: 3px 10px;
+    font-size: 10px; font-weight: 700; color: #16a34a;
+    margin-left: 10px; vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button type="button" class="tab-btn active" data-tab="mayo">Mayo 2026</button>
+    <button type="button" class="tab-btn" data-tab="junio">Junio 2026</button>
+  </div>
+
+  <!-- ============ TAB MAYO ============ -->
+  <div id="tab-mayo" class="tab-content active">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="brand-tag">Del Norte by Windmar Home &middot; Meta Ads</div>
+        <div class="report-title">Reporte Ejecutivo de Pauta</div>
+        <div class="report-subtitle">Campaña de Generación de Leads — Solar &amp; Roofing</div>
+      </div>
+      <div class="period-badge">
+        <div class="label">Periodo</div>
+        <div class="value">1 – 31 Mayo 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-card blue">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-label">Gasto Total</div>
+      <div class="kpi-value">$436<span style="font-size:20px">.58</span></div>
+      <div class="kpi-sub">USD invertidos en el mes</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-icon">📋</div>
+      <div class="kpi-label">Leads Generados</div>
+      <div class="kpi-value">24</div>
+      <div class="kpi-sub">vía formulario Meta</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-icon">🎯</div>
+      <div class="kpi-label">Costo por Lead</div>
+      <div class="kpi-value">$17<span style="font-size:20px">.46</span></div>
+      <div class="kpi-sub">USD por lead captado</div>
+    </div>
+  </div>
+
+  <!-- FUNNEL -->
+  <div class="section">
+    <div class="section-title">Embudo de Conversión</div>
+    <div class="funnel-row">
+      <div class="funnel-label">Leads captados</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:100%;background:#38bdf8;"></div></div>
+      <div class="funnel-num">24</div>
+      <div class="funnel-rate">100%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Cita coordinada</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:8.3%;background:#4ade80;"></div></div>
+      <div class="funnel-num">2</div>
+      <div class="funnel-rate">8.3%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Cita realizada</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:4.1%;background:#a3e635;"></div></div>
+      <div class="funnel-num">1</div>
+      <div class="funnel-rate">4.1%</div>
+    </div>
+  </div>
+
+  <!-- LEAD STATUS -->
+  <div class="section">
+    <div class="section-title">Estatus de Leads — 24 total</div>
+    <div class="lead-grid">
+      <div class="lead-item">
+        <div class="lead-dot dot-yellow"></div>
+        <div class="lead-label">No contesta / Llamar después</div>
+        <div class="lead-right"><div class="lead-count">15</div><div class="lead-pct">62.5%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-red"></div>
+        <div class="lead-label">No le interesa</div>
+        <div class="lead-right"><div class="lead-count">4</div><div class="lead-pct">16.7%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-green"></div>
+        <div class="lead-label">Cita coordinada</div>
+        <div class="lead-right"><div class="lead-count">2</div><div class="lead-pct">8.3%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-blue"></div>
+        <div class="lead-label">Lead nuevo (sin gestión)</div>
+        <div class="lead-right"><div class="lead-count">1</div><div class="lead-pct">4.2%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-orange"></div>
+        <div class="lead-label">Cita realizada</div>
+        <div class="lead-right"><div class="lead-count">1</div><div class="lead-pct">4.2%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-gray"></div>
+        <div class="lead-label">Lead frío</div>
+        <div class="lead-right"><div class="lead-count">1</div><div class="lead-pct">4.2%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECISION -->
+  <div class="decision-box">
+    <div class="decision-title">⚡ Decisión Estratégica — Cierre 31 de Mayo 2026</div>
+    <div class="decision-content">
+      Al cierre del mes se desactivaron los creativos de <strong>Solar</strong> y se mantuvieron activos <strong>únicamente los creativos de Roofing</strong>, concentrando el presupuesto en el vertical con mayor potencial de conversión identificado para junio.
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="section">
+    <div class="section-title">Próximos Pasos Recomendados</div>
+    <ul class="next-steps">
+      <li>
+        <div class="step-num">1</div>
+        <span>Gestionar activamente los <strong>15 leads pendientes</strong> ("no contesta") con al menos 3 intentos de contacto antes de clasificar como frío.</span>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <span>Monitorear el desempeño de los creativos de <strong>Roofing en junio</strong> para validar si el CPL mejora con presupuesto concentrado.</span>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <span>Evaluar reactivación de creativos de <strong>Solar</strong> con nueva propuesta gráfica o mensaje si Roofing no escala conversiones.</span>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <span>Establecer un <strong>SLA de contacto máximo de 24h</strong> desde el ingreso del lead para reducir la tasa de no respuesta del 62.5%.</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="footer">Del Norte by Windmar Home &middot; Reporte generado junio 2026</div>
+
+  </div><!-- end tab-mayo -->
+
+  <!-- ============ TAB JUNIO ============ -->
+  <div id="tab-junio" class="tab-content">
+
+  <!-- HEADER JUNIO -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="brand-tag">Del Norte by Windmar Home &middot; Meta Ads</div>
+        <div class="report-title">Reporte Ejecutivo de Pauta</div>
+        <div class="report-subtitle">Campaña de Generación de Leads — Roofing
+          <span class="mejora-badge">↑ Solo Roofing activo</span>
+        </div>
+      </div>
+      <div class="period-badge">
+        <div class="label">Periodo</div>
+        <div class="value">1 – 16 Jun 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs JUNIO -->
+  <div class="kpi-row">
+    <div class="kpi-card blue">
+      <div class="kpi-icon">💰</div>
+      <div class="kpi-label">Gasto Total</div>
+      <div class="kpi-value">$388<span style="font-size:20px">.21</span></div>
+      <div class="kpi-sub">USD · 16 días de pauta</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-icon">📋</div>
+      <div class="kpi-label">Leads Generados</div>
+      <div class="kpi-value">26</div>
+      <div class="kpi-sub">vía formulario Meta <span class="mejora-badge">↑ vs 24 mayo</span></div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-icon">🎯</div>
+      <div class="kpi-label">Costo por Lead</div>
+      <div class="kpi-value">$14<span style="font-size:20px">.93</span></div>
+      <div class="kpi-sub">USD · <span style="color:#16a34a;font-weight:700;">↓ $2.53 vs mayo</span></div>
+    </div>
+  </div>
+
+  <!-- FUNNEL JUNIO -->
+  <div class="section">
+    <div class="section-title">Embudo de Conversión</div>
+    <div class="funnel-row">
+      <div class="funnel-label">Leads captados</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:100%;background:#38bdf8;"></div></div>
+      <div class="funnel-num">26</div>
+      <div class="funnel-rate">100%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Cita coordinada</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:19.2%;background:#4ade80;"></div></div>
+      <div class="funnel-num">5</div>
+      <div class="funnel-rate">19.2%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Leads en gestión activa</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:19.2%;background:#fbbf24;"></div></div>
+      <div class="funnel-num">5</div>
+      <div class="funnel-rate">19.2%</div>
+    </div>
+  </div>
+
+  <!-- STATUS LEADS JUNIO -->
+  <div class="section">
+    <div class="section-title">Estatus de Leads — 26 total</div>
+    <div class="lead-grid">
+      <div class="lead-item">
+        <div class="lead-dot dot-yellow"></div>
+        <div class="lead-label">No contesta / Llamar después</div>
+        <div class="lead-right"><div class="lead-count">11</div><div class="lead-pct">42.3%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-blue"></div>
+        <div class="lead-label">Lead nuevo (sin gestión)</div>
+        <div class="lead-right"><div class="lead-count">5</div><div class="lead-pct">19.2%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-green"></div>
+        <div class="lead-label">Cita coordinada</div>
+        <div class="lead-right"><div class="lead-count">5</div><div class="lead-pct">19.2%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-red"></div>
+        <div class="lead-label">No le interesa</div>
+        <div class="lead-right"><div class="lead-count">3</div><div class="lead-pct">11.5%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-gray"></div>
+        <div class="lead-label">Lead frío</div>
+        <div class="lead-right"><div class="lead-count">1</div><div class="lead-pct">3.8%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-orange"></div>
+        <div class="lead-label">Cliente doble formulario</div>
+        <div class="lead-right"><div class="lead-count">1</div><div class="lead-pct">3.8%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARATIVA -->
+  <div class="section">
+    <div class="section-title">Comparativa Mayo vs Junio</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead>
+        <tr>
+          <th style="text-align:left;padding:8px 10px;color:#94a3b8;font-weight:600;font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #f1f5f9;">Métrica</th>
+          <th style="text-align:center;padding:8px 10px;color:#94a3b8;font-weight:600;font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #f1f5f9;">Mayo</th>
+          <th style="text-align:center;padding:8px 10px;color:#94a3b8;font-weight:600;font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #f1f5f9;">Junio*</th>
+          <th style="text-align:center;padding:8px 10px;color:#94a3b8;font-weight:600;font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid #f1f5f9;">Variación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #f8fafc;">
+          <td style="padding:10px 10px;color:#475569;font-weight:500;">Gasto total</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">$436.58</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">$388.21</td>
+          <td style="padding:10px 10px;text-align:center;color:#16a34a;font-weight:700;">↓ $48.37</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f8fafc;">
+          <td style="padding:10px 10px;color:#475569;font-weight:500;">Leads generados</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">24</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">26</td>
+          <td style="padding:10px 10px;text-align:center;color:#16a34a;font-weight:700;">↑ +2</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f8fafc;">
+          <td style="padding:10px 10px;color:#475569;font-weight:500;">Costo por lead</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">$17.46</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">$14.93</td>
+          <td style="padding:10px 10px;text-align:center;color:#16a34a;font-weight:700;">↓ 14.5%</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f8fafc;">
+          <td style="padding:10px 10px;color:#475569;font-weight:500;">Citas coordinadas</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">2</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">5</td>
+          <td style="padding:10px 10px;text-align:center;color:#16a34a;font-weight:700;">↑ +150%</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 10px;color:#475569;font-weight:500;">No contesta</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">15 (62.5%)</td>
+          <td style="padding:10px 10px;text-align:center;color:#1e293b;font-weight:700;">11 (42.3%)</td>
+          <td style="padding:10px 10px;text-align:center;color:#16a34a;font-weight:700;">↓ 20.2 pts</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:10px;color:#94a3b8;margin-top:10px;">* Junio parcial: 1–16 junio 2026 (16 días vs. 31 días de mayo)</p>
+  </div>
+
+  <!-- DECISION JUNIO -->
+  <div class="decision-box">
+    <div class="decision-title">📊 Contexto Estratégico — Mes en Curso</div>
+    <div class="decision-content">
+      La pauta corre <strong>exclusivamente con creativos de Roofing</strong> desde el 31 de mayo. Con solo 16 días activos, ya se superó el volumen de mayo en leads y las citas coordinadas aumentaron un <strong>150%</strong> (de 2 a 5). El CPL bajó de $17.46 a <strong>$14.93</strong>, validando la decisión de concentrar presupuesto en este vertical.
+    </div>
+  </div>
+
+  <!-- NEXT STEPS JUNIO -->
+  <div class="section">
+    <div class="section-title">Próximos Pasos Recomendados</div>
+    <ul class="next-steps">
+      <li>
+        <div class="step-num">1</div>
+        <span>Gestionar los <strong>5 leads nuevos sin contacto</strong> como prioridad inmediata — son los de mayor potencial de conversión rápida.</span>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <span>Dar seguimiento a los <strong>11 leads "no contesta"</strong> con al menos 3 intentos; la tasa bajó vs. mayo pero sigue siendo el bloque más grande.</span>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <span>Confirmar y ejecutar las <strong>5 citas coordinadas</strong> — el ritmo de cierre en junio definirá si Roofing es el vertical prioritario para Q3.</span>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <span>Evaluar aumentar presupuesto en la segunda quincena para aprovechar el <strong>CPL más bajo</strong> y escalar antes de cerrar el mes.</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="footer">Del Norte by Windmar Home &middot; Reporte parcial junio 2026 (1–16 jun)</div>
+
+  </div><!-- end tab-junio -->
+
+</div><!-- end wrap -->
+
+<script>
+  function switchTab(tabKey) {
+    const activeTab = document.getElementById('tab-' + tabKey);
+    if (!activeTab) return;
+
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+    activeTab.classList.add('active');
+    const activeButton = document.querySelector(`.tab-btn[data-tab="${tabKey}"]`);
+    if (activeButton) activeButton.classList.add('active');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.tab-btn[data-tab]').forEach(button => {
+      button.addEventListener('click', () => {
+        switchTab(button.getAttribute('data-tab'));
+      });
+    });
+  });
+</script>
+</body>
+</html>

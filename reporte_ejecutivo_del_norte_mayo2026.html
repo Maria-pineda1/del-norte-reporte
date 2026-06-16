@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Reporte Ejecutivo · Del Norte by Windmar Home · Mayo 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    color: #f1f5f9;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+  .wrap { max-width: 800px; margin: 0 auto; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 30px 32px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #0ea5e9, #38bdf8, #7dd3fc);
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .brand-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #38bdf8; margin-bottom: 6px; }
+  .report-title { font-size: 22px; font-weight: 800; color: #f8fafc; line-height: 1.2; }
+  .report-subtitle { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+  .period-badge {
+    background: #1e3a5f;
+    border: 1px solid #0ea5e9;
+    border-radius: 8px;
+    padding: 10px 18px;
+    text-align: center;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .period-badge .label { font-size: 9px; color: #7dd3fc; letter-spacing: 1px; text-transform: uppercase; }
+  .period-badge .value { font-size: 13px; font-weight: 700; color: #f0f9ff; margin-top: 3px; }
+
+  /* KPIs */
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .kpi-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 22px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; }
+  .kpi-card.blue::after { background: #0ea5e9; }
+  .kpi-card.green::after { background: #22c55e; }
+  .kpi-card.amber::after { background: #f59e0b; }
+  .kpi-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #64748b; margin-bottom: 10px; }
+  .kpi-value { font-size: 34px; font-weight: 800; line-height: 1; }
+  .kpi-card.blue .kpi-value { color: #38bdf8; }
+  .kpi-card.green .kpi-value { color: #4ade80; }
+  .kpi-card.amber .kpi-value { color: #fbbf24; }
+  .kpi-sub { font-size: 11px; color: #64748b; margin-top: 6px; }
+
+  /* SECTION */
+  .section { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .section-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #64748b; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid #334155; }
+
+  /* FUNNEL */
+  .funnel-row { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .funnel-label { font-size: 12px; color: #94a3b8; width: 160px; flex-shrink: 0; }
+  .funnel-bar-bg { flex: 1; height: 10px; background: #0f172a; border-radius: 99px; overflow: hidden; }
+  .funnel-bar { height: 100%; border-radius: 99px; }
+  .funnel-num { font-size: 14px; font-weight: 700; color: #f1f5f9; width: 28px; text-align: right; }
+  .funnel-rate { font-size: 11px; color: #475569; width: 40px; text-align: right; }
+
+  /* LEAD GRID */
+  .lead-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .lead-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    background: #0f172a;
+    border-radius: 8px;
+    border: 1px solid #1e293b;
+  }
+  .lead-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-orange { background: #f97316; }
+  .dot-green { background: #22c55e; }
+  .dot-yellow { background: #eab308; }
+  .dot-red { background: #ef4444; }
+  .dot-blue { background: #3b82f6; }
+  .dot-gray { background: #64748b; }
+  .lead-label { font-size: 12px; color: #cbd5e1; flex: 1; line-height: 1.3; }
+  .lead-count { font-size: 18px; font-weight: 800; color: #f1f5f9; }
+  .lead-pct { font-size: 10px; color: #475569; display: block; text-align: right; }
+
+  /* DECISION */
+  .decision-box {
+    background: linear-gradient(135deg, #1a2e1a 0%, #0f1f0f 100%);
+    border: 1px solid #166534;
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .decision-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .decision-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #4ade80; margin-bottom: 12px; }
+  .decision-content { font-size: 13px; color: #bbf7d0; line-height: 1.7; }
+  .decision-content strong { color: #4ade80; }
+
+  /* NEXT */
+  .next-steps { list-style: none; }
+  .next-steps li { display: flex; align-items: flex-start; gap: 12px; font-size: 12px; color: #cbd5e1; padding: 10px 0; border-bottom: 1px solid #1e293b; line-height: 1.6; }
+  .next-steps li:last-child { border-bottom: none; }
+  .step-num { background: #0ea5e9; color: #fff; font-size: 9px; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .next-steps strong { color: #f1f5f9; }
+
+  .footer { text-align: center; font-size: 10px; color: #334155; margin-top: 10px; letter-spacing: 0.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="brand-tag">Del Norte by Windmar Home &middot; Meta Ads</div>
+        <div class="report-title">Reporte Ejecutivo de Pauta</div>
+        <div class="report-subtitle">Campaña de Generación de Leads — Solar &amp; Roofing</div>
+      </div>
+      <div class="period-badge">
+        <div class="label">Periodo</div>
+        <div class="value">1 – 31 Mayo 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card blue">
+      <div class="kpi-label">Gasto Total</div>
+      <div class="kpi-value">$436<span style="font-size:18px">.58</span></div>
+      <div class="kpi-sub">USD invertidos en el mes</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Leads Generados</div>
+      <div class="kpi-value">24</div>
+      <div class="kpi-sub">vía formulario Meta</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Costo por Lead</div>
+      <div class="kpi-value">$17<span style="font-size:18px">.46</span></div>
+      <div class="kpi-sub">USD por lead captado</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Embudo de Conversión</div>
+    <div class="funnel-row">
+      <div class="funnel-label">Leads captados</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:100%;background:#0ea5e9;"></div></div>
+      <div class="funnel-num">24</div>
+      <div class="funnel-rate">100%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Cita coordinada</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:8.3%;background:#22c55e;"></div></div>
+      <div class="funnel-num">2</div>
+      <div class="funnel-rate">8.3%</div>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-label">Cita realizada</div>
+      <div class="funnel-bar-bg"><div class="funnel-bar" style="width:4.1%;background:#a3e635;"></div></div>
+      <div class="funnel-num">1</div>
+      <div class="funnel-rate">4.1%</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Estatus de Leads — 24 total</div>
+    <div class="lead-grid">
+      <div class="lead-item">
+        <div class="lead-dot dot-yellow"></div>
+        <div class="lead-label">No contesta / Llamar después</div>
+        <div><div class="lead-count">15</div><div class="lead-pct">62.5%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-red"></div>
+        <div class="lead-label">No le interesa</div>
+        <div><div class="lead-count">4</div><div class="lead-pct">16.7%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-green"></div>
+        <div class="lead-label">Cita coordinada</div>
+        <div><div class="lead-count">2</div><div class="lead-pct">8.3%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-blue"></div>
+        <div class="lead-label">Lead nuevo (sin gestión)</div>
+        <div><div class="lead-count">1</div><div class="lead-pct">4.2%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-orange"></div>
+        <div class="lead-label">Cita realizada</div>
+        <div><div class="lead-count">1</div><div class="lead-pct">4.2%</div></div>
+      </div>
+      <div class="lead-item">
+        <div class="lead-dot dot-gray"></div>
+        <div class="lead-label">Lead frío</div>
+        <div><div class="lead-count">1</div><div class="lead-pct">4.2%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-box">
+    <div class="decision-title">⚡ Decisión Estratégica — Cierre 31 de Mayo 2026</div>
+    <div class="decision-content">
+      Al cierre del mes se desactivaron los creativos de <strong>Solar</strong> y se mantuvieron activos <strong>únicamente los creativos de Roofing</strong>, concentrando el presupuesto en el vertical con mayor potencial de conversión identificado para junio.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Próximos Pasos Recomendados</div>
+    <ul class="next-steps">
+      <li>
+        <div class="step-num">1</div>
+        <span>Gestionar activamente los <strong>15 leads pendientes</strong> ("no contesta") con al menos 3 intentos de contacto antes de clasificar como frío.</span>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <span>Monitorear el desempeño de los creativos de <strong>Roofing en junio</strong> para validar si el CPL mejora con presupuesto concentrado.</span>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <span>Evaluar reactivación de creativos de <strong>Solar</strong> con nueva propuesta gráfica o mensaje si Roofing no escala conversiones.</span>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <span>Establecer un <strong>SLA de contacto máximo de 24h</strong> desde el ingreso del lead para reducir la tasa de no respuesta (62.5%).</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="footer">Del Norte by Windmar Home &middot; Reporte generado junio 2026</div>
+</div>
+</body>
+</html>
